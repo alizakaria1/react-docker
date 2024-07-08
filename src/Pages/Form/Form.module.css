@@ -1,0 +1,20 @@
+.inputContainer {
+  max-width: 80rem;
+  margin: 5rem auto;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 3rem;
+}
+
+div label {
+  display: block;
+  font-size: 1.6rem;
+}
+
+label {
+  margin-bottom: 1rem;
+}
+
+textarea {
+  width: 80%;
+}
