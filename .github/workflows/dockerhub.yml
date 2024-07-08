@@ -22,17 +22,22 @@ jobs:
           password: ${{ secrets.DOCKERHUB_TOKEN }}
 
       - name: Extract current version
-        id: extract_version
-        run: |
-          if git tag --list | grep -q "^v[0-9]*$"; then
-            CURRENT_VERSION=$(git tag --list | grep "^v[0-9]*$" | sort -V | tail -n 1)
-            echo "Current version: $CURRENT_VERSION"
-            NEXT_VERSION=v$(( ${CURRENT_VERSION#v} + 1 ))
-          else
-            NEXT_VERSION=v1
-          fi
-          echo "Next version: $NEXT_VERSION"
-          echo "VERSION=$NEXT_VERSION" >> $GITHUB_ENV
+      id: extract_version
+      run: |
+        # Fetch all tags
+        git fetch --tags
+
+        # Get the latest tag version matching 'v[0-9]*' pattern
+        if git tag --list | grep -q "^v[0-9]*$"; then
+          CURRENT_VERSION=$(git tag --list | grep "^v[0-9]*$" | sort -V | tail -n 1)
+          echo "Current version: $CURRENT_VERSION"
+          NEXT_VERSION=v$(( ${CURRENT_VERSION#v} + 1 ))
+        else
+          NEXT_VERSION=v1
+        fi
+
+        echo "Next version: $NEXT_VERSION"
+        echo "VERSION=$NEXT_VERSION" >> $GITHUB_ENV
 
       - name: Build and push
         uses: docker/build-push-action@v6
@@ -42,5 +47,7 @@ jobs:
 
       - name: Create new tag
         run: |
-          git tag ${{ env.VERSION }}
-          git push origin ${{ env.VERSION }}
+        git config user.name "github-actions"
+        git config user.email "github-actions@github.com"
+        git tag ${{ env.VERSION }}
+        git push origin ${{ env.VERSION }}
