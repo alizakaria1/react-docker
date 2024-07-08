@@ -40,7 +40,7 @@ export default function Details() {
             </div>
             <div className={styles.reviews}>
               <Rating initialValue={3} size={20} readonly={true} />
-              <span>(64 reviews)</span>
+              <span>(70 reviews)</span>
             </div>
           </div>
         </div>
