@@ -1,13 +1,17 @@
+import { faArrowLeft } from "@fortawesome/free-solid-svg-icons";
 import styles from "./Details.module.css";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { useNavigate } from "react-router-dom";
+import { Rating } from "react-simple-star-rating";
+
 export default function Details() {
+  const navigate = useNavigate();
   return (
     <main>
       <div className={styles.card}>
         <div className={styles.card__title}>
-          <div className={styles.icon}>
-            <a href="#">
-              <i className="fa fa-arrow-left"></i>
-            </a>
+          <div className={styles.icon} onClick={() => navigate("/")}>
+            <FontAwesomeIcon icon={faArrowLeft} size="2x" />
           </div>
           <h3>New products</h3>
         </div>
@@ -34,40 +38,13 @@ export default function Details() {
                 quasi laboriosam hic cupiditate perferendis esse numquam magni.
               </p>
             </div>
-            <span className={styles.stock}>
-              <i className="fa fa-pen"></i> In stock
-            </span>
             <div className={styles.reviews}>
-              <ul className={styles.stars}>
-                <li>
-                  <i className="fa fa-star"></i>
-                </li>
-                <li>
-                  <i className="fa fa-star"></i>
-                </li>
-                <li>
-                  <i className="fa fa-star"></i>
-                </li>
-                <li>
-                  <i className="fa fa-star"></i>
-                </li>
-                <li>
-                  <i className="fa fa-star-o"></i>
-                </li>
-              </ul>
+              <Rating initialValue={3} size={20} readonly={true} />
               <span>(64 reviews)</span>
             </div>
           </div>
         </div>
-        <div className={styles.card__footer}>
-          <div className={styles.recommend}>
-            <p>Recommended by</p>
-            <h3>Andrew Palmer</h3>
-          </div>
-          <div className={styles.action}>
-            <button type="button">Add to cart</button>
-          </div>
-        </div>
+        <div className={styles.card__footer}></div>
       </div>
     </main>
   );

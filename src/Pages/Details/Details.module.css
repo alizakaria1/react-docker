@@ -1,8 +1,8 @@
 @import url("https://fonts.googleapis.com/css?family=Fjalla+One|Montserrat:300,400,700,800|Open+Sans:300");
 
 main {
-  max-width: 720px;
-  margin: 5% auto;
+  max-width: 72rem;
+  margin: 1% auto;
 }
 
 .card {
@@ -33,12 +33,13 @@ main {
       padding: 10px 10px;
       transition: 200ms;
 
-      > a {
+      > i {
         color: #fff;
       }
 
       &:hover {
         background: #252525;
+        cursor: pointer;
       }
     }
   }
