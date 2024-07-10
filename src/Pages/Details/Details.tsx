@@ -7,6 +7,7 @@ import { useEffect, useState } from "react";
 import { Product } from "../../Models/index";
 import axios from "axios";
 import { ClipLoader } from "react-spinners";
+import NoImage from "../../no-image.png";
 
 export default function Details() {
   const navigate = useNavigate();
@@ -65,7 +66,7 @@ export default function Details() {
               <p className={styles.price}>${product.price}</p>
             </div>
             <div className={styles.image}>
-              <img src={product.uploadedFiles?.[0]?.url || ""} alt="" />
+              <img src={product.uploadedFiles?.[0]?.url || NoImage} alt="" />
             </div>
           </div>
           <div className={styles.half}>
@@ -78,7 +79,6 @@ export default function Details() {
             </div>
           </div>
         </div>
-        <div className={styles.card__footer}></div>
       </div>
     </main>
   );

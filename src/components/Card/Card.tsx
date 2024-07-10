@@ -1,5 +1,5 @@
+import { useNavigate } from "react-router-dom";
 import styles from "./Card.module.css";
-import pineapple from "../../pineapple.jpg";
 import { Rating } from "react-simple-star-rating";
 
 interface CardProps {
@@ -7,6 +7,8 @@ interface CardProps {
   productName: string;
   rating: number;
   ratingCount: number;
+  onClick?: () => Promise<void>;
+  navigation: string;
 }
 
 export default function Card({
@@ -14,17 +16,32 @@ export default function Card({
   productName,
   rating,
   ratingCount,
+  onClick,
+  navigation,
 }: CardProps) {
+  const navigate = useNavigate();
+
+  const handleClick = async () => {
+    if (onClick) {
+      await onClick();
+    }
+  };
+
   return (
     <div className={styles.container}>
       <div className={styles.image}>
-        <img src={imgUrl} alt="" className={styles.img} />
+        <img
+          src={imgUrl}
+          alt=""
+          className={styles.img}
+          onClick={() => navigate(navigation)}
+        />
       </div>
       <div className={styles.footer}>
         <h2 className={styles.productName}>{productName}</h2>
         <Rating initialValue={rating} size={20} readonly={true} />
         <span className={styles.ratingCount}>({ratingCount})</span>
-        <button className={styles.btn}>Details</button>
+        <button onClick={handleClick}>Delete</button>
       </div>
     </div>
   );

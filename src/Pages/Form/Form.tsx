@@ -5,7 +5,7 @@ import React, {
   useRef,
   useState,
 } from "react";
-import { Input } from "../../components/index";
+import { Button, Input } from "../../components/index";
 import styles from "./Form.module.css";
 import { Product, UploadedFiles } from "../../Models/index";
 import axios from "axios";
@@ -20,7 +20,6 @@ export default function Form() {
   const [description, setDescription] = useState<string>("");
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
   const [isLoading, setIsLoading] = useState<boolean>(false);
-  const [text] = useState<string>("Product added successfully");
 
   const navigation = useNavigate();
 
@@ -93,19 +92,18 @@ export default function Form() {
 
         if (fileResponse.status === 200) {
           setIsLoading(false);
-          navigation("/", { state: { text } });
+          navigation("/");
         } else {
           alert(JSON.stringify(fileResponse.data));
         }
       } else if (response.status === 200) {
-        navigation("/", { state: { text } });
+        navigation("/");
       }
     } catch (err: any) {
       console.error(err);
       alert("an error occured please try again ");
     } finally {
       setIsLoading(false);
-      //navigation("/");
     }
   };
 
@@ -131,67 +129,74 @@ export default function Form() {
   }
 
   return (
-    <div className={styles.inputContainer}>
-      <div className="labelsContainer">
-        <label htmlFor="">Product Name</label>
-        <Input
-          type="text"
-          placeholder="Enter Product Name"
-          value={productName}
-          onChange={handleNameChange}
-        />
+    <div className={styles.container}>
+      <div className={styles.button}>
+        <Button text={"Home"} color={"#719feb"} navigateTo={"/"} />
       </div>
-      <div className="labelsContainer">
-        <label htmlFor="">Rating</label>
-        <Input
-          type="number"
-          placeholder="Enter rating"
-          value={rating}
-          onChange={handleRatingChange}
-          min={0}
-          max={5}
-        />
-      </div>
-      <div>
-        <label htmlFor="">Rating Count</label>
-        <Input
-          type="number"
-          placeholder="Enter Rating Count"
-          value={ratingCount}
-          onChange={handleRatingCountChange}
-          min={0}
-        />
-      </div>
-      <div>
-        <label htmlFor="">Price</label>
-        <Input
-          type="number"
-          placeholder="Enter Price"
-          value={price}
-          onChange={handlePriceChange}
-          min={0}
-        />
-      </div>
-      <div>
-        <label htmlFor="">Description</label>
-        <textarea
-          placeholder="Product Description"
-          value={description}
-          onChange={handleDescriptionChange}
-        ></textarea>
-      </div>
-      <div>
-        <label htmlFor="">Upload an image</label>
-        <input
-          type="file"
-          ref={fileInputRef}
-          src=""
-          alt=""
-          onChange={handleFileChange}
-        />
-      </div>
-      <div>
-        <button onClick={handleSubmit}>Submit</button>
+
+      <div className={styles.inputContainer}>
+        <div className="labelsContainer">
+          <label htmlFor="">Product Name</label>
+          <Input
+            type="text"
+            placeholder="Enter Product Name"
+            value={productName}
+            onChange={handleNameChange}
+          />
+        </div>
+        <div className="labelsContainer">
+          <label htmlFor="">Rating</label>
+          <Input
+            type="number"
+            placeholder="Enter rating"
+            value={rating}
+            onChange={handleRatingChange}
+            min={0}
+            max={5}
+          />
+        </div>
+        <div>
+          <label htmlFor="">Rating Count</label>
+          <Input
+            type="number"
+            placeholder="Enter Rating Count"
+            value={ratingCount}
+            onChange={handleRatingCountChange}
+            min={0}
+          />
+        </div>
+        <div>
+          <label htmlFor="">Price</label>
+          <Input
+            type="number"
+            placeholder="Enter Price"
+            value={price}
+            onChange={handlePriceChange}
+            min={0}
+          />
+        </div>
+        <div>
+          <label htmlFor="">Description</label>
+          <textarea
+            placeholder="Product Description"
+            value={description}
+            onChange={handleDescriptionChange}
+          ></textarea>
+        </div>
+        <div>
+          <label htmlFor="">Upload an image</label>
+          <input
+            type="file"
+            ref={fileInputRef}
+            src=""
+            alt=""
+            onChange={handleFileChange}
+          />
+        </div>
+        <div>
+          <Button text={"Submit"} color={"#31f57f"} apiRequest={handleSubmit} />
+          {/* <button onClick={handleSubmit}>Submit</button> */}
+        </div>
       </div>
     </div>
   );

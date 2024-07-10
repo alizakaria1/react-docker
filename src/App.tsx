@@ -1,17 +1,15 @@
-import { useLocation } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import "./App.css";
 import { useEffect, useState } from "react";
-import { ToastContainer, toast } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
 import axios from "axios";
 import { Product } from "./Models/index";
-import { Card } from "./components/index";
+import { Button, Card } from "./components/index";
+import NoImage from "./no-image.png";
 
 function App() {
   const [products, setProducts] = useState<Product[]>([]);
 
-  const location = useLocation();
-  const text = location.state?.text;
+  const navigate = useNavigate();
 
   const getProducts = async (): Promise<Product[]> => {
     try {
@@ -29,6 +27,24 @@ function App() {
     }
   };
 
+  const handleDelete = async (id: number): Promise<void> => {
+    try {
+      const productUrl = `${process.env.REACT_APP_API_URL}Products/Product?id=${id}`;
+      const response = await axios({
+        method: "DELETE",
+        url: productUrl,
+      });
+
+      if (response.status === 200) {
+        const res = await getProducts();
+        setProducts(res);
+      }
+    } catch (error) {
+      console.error(error);
+      alert("an error have occured");
+    }
+  };
+
   useEffect(() => {
     const fetchProducts = async () => {
       const fetchedProducts = await getProducts();
@@ -36,33 +52,37 @@ function App() {
     };
 
     fetchProducts();
+  }, []);
 
-    if (text) {
-      toast.success(text);
-    }
-  }, [text]);
-
-  if (!products) {
+  if (products.length < 1) {
     return (
       <div>
         No products are available right now , would you like to add some ?
+        <button onClick={() => navigate("form")}>Add Product</button>
       </div>
     );
   }
 
   return (
     <>
-      <ToastContainer position="top-right" />
-      <div className="cardContainer">
-        {products?.map((product) => (
-          <Card
-            key={product.id}
-            imgUrl={product.uploadedFiles?.[0]?.url || ""}
-            productName={product.name}
-            rating={product.rating}
-            ratingCount={product.ratingCount}
-          />
-        ))}
+      <div>
+        <div className="button">
+          <Button text={"Add Product"} color={"#719feb"} navigateTo={"/form"} />
+        </div>
+        <div className="cardContainer">
+          {products?.map((product) => (
+            <div key={product.id} className="card">
+              <Card
+                imgUrl={product.uploadedFiles?.[0]?.url || NoImage}
+                productName={product.name}
+                rating={product.rating}
+                ratingCount={product.ratingCount}
+                onClick={() => handleDelete(product.id)}
+                navigation={`/details/${product.id}`}
+              />
+            </div>
+          ))}
+        </div>
       </div>
     </>
   );
