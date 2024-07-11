@@ -15,6 +15,8 @@ function App() {
     try {
       const productsUrl = `${process.env.REACT_APP_API_URL}Products/Products`;
 
+      console.log(productsUrl);
+
       const response = await axios<Product[]>({
         method: "GET",
         url: productsUrl,
